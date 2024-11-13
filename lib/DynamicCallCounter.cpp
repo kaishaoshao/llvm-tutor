@@ -45,6 +45,7 @@
 //========================================================================
 #include "DynamicCallCounter.h"
 
+#include "llvm/IR/Module.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
@@ -54,7 +55,7 @@ using namespace llvm;
 
 #define DEBUG_TYPE "dynamic-cc"
 
-Constant *CreateGlobalCounter(Module &M, StringRef GlobalVarName) {
+Constant *CreateGlobalCounter(llvm::Module &M, StringRef GlobalVarName) {
   auto &CTX = M.getContext();
 
   // This will insert a declaration into M

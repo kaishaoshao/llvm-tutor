@@ -162,7 +162,7 @@ PassPluginLibraryInfo getConvertFCmpEqPluginInfo() {
             PB.registerPipelineParsingCallback(
                 [&](StringRef Name, FunctionPassManager &FPM,
                     ArrayRef<PassBuilder::PipelineElement>) {
-                  if (Name.equals(PassArg)) {
+                  if (Name.equals_insensitive(PassArg)) {
                     FPM.addPass(ConvertFCmpEq());
                     return true;
                   }

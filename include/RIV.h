@@ -13,6 +13,7 @@
 #ifndef LLVM_TUTOR_RIV_H
 #define LLVM_TUTOR_RIV_H
 
+#include "llvm/IR/Module.h"
 #include "llvm/ADT/MapVector.h"
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/IR/Dominators.h"

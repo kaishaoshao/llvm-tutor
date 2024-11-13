@@ -11,6 +11,7 @@
 #define LLVM_TUTOR_INSTRUMENT_BASIC_H
 
 #include "llvm/IR/PassManager.h"
+#include "llvm/IR/Module.h"
 #include "llvm/Pass.h"
 
 //------------------------------------------------------------------------------

@@ -13,6 +13,7 @@
 #ifndef LLVM_TUTOR_STATICCALLCOUNTER_H
 #define LLVM_TUTOR_STATICCALLCOUNTER_H
 
+#include "llvm/Support/ManagedStatic.h"
 #include "llvm/ADT/MapVector.h"
 #include "llvm/IR/AbstractCallSite.h"
 #include "llvm/IR/Module.h"

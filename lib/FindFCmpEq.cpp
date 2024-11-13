@@ -119,11 +119,11 @@ PassPluginLibraryInfo getFindFCmpEqPluginInfo() {
             // pattern `print<pass-name>`. This is the pattern we're checking
             // for here.
             PB.registerPipelineParsingCallback(
-                [&](StringRef Name, FunctionPassManager &FPM,
+                [&](llvm::StringRef Name, FunctionPassManager &FPM,
                     ArrayRef<PassBuilder::PipelineElement>) {
                   std::string PrinterPassElement =
                       formatv("print<{0}>", PassArg);
-                  if (Name.equals(PrinterPassElement)) {
+                  if (Name.equals_insensitive(PrinterPassElement)) {
                     FPM.addPass(FindFCmpEqPrinter(llvm::outs()));
                     return true;
                   }
