@@ -8,7 +8,8 @@ project(llvm-tutor)
 set(LT_LLVM_INSTALL_DIR "" CACHE PATH "LLVM installation directory")
 
 # 1.1 Check the "include" directory
-set(LT_LLVM_INCLUDE_DIR "/usr/include/llvm-18")
+set(LT_LLVM_INCLUDE_DIR "${LT_LLVM_INSTALL_DIR}")
+message(STATUS "LT_LLVM_INCLUDE_DIR: ${LT_LLVM_INCLUDE_DIR}")
 if(NOT EXISTS "${LT_LLVM_INCLUDE_DIR}")
 message(FATAL_ERROR
   " LT_LLVM_INSTALL_DIR (${LT_LLVM_INCLUDE_DIR}) is invalid.")
