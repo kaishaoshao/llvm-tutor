@@ -1,8 +1,12 @@
 llvm-tutor
-=========
+==========
+
+使用clang version 20.0.0git (https://github.com/llvm/llvm-project.git 983869a0365c685049ea9015a2b4d7241b98fd4f)学习教程，新增文件夹 ：src  docx  scipts
+
+结合AI分析所涉及的知识点，可能有错误的地方
+
 [![Apple Silicon](https://github.com/banach-space/llvm-tutor/actions/workflows/apple-silicon.yml/badge.svg?branch=main)](https://github.com/banach-space/llvm-tutor/actions/workflows/apple-silicon.yml)
 [![x86-Ubuntu](https://github.com/banach-space/llvm-tutor/actions/workflows/x86-ubuntu.yml/badge.svg?branch=main)](https://github.com/banach-space/llvm-tutor/actions/workflows/x86-ubuntu.yml)
-
 
 Example LLVM passes - based on **LLVM 18**
 
@@ -14,6 +18,7 @@ tutorial that targets novice and aspiring LLVM developers. Key features:
 * **Modern** - based on the latest version of LLVM (and updated with every release)
 
 ### Overview
+
 LLVM implements a very rich, powerful and popular API. However, like many
 complex technologies, it can be quite daunting and overwhelming to learn and
 master. The goal of this LLVM tutorial is to showcase that LLVM can in fact be
@@ -32,10 +37,11 @@ Visit [**clang-tutor**](https://github.com/banach-space/clang-tutor/) if you
 are internested in similar tutorial for Clang.
 
 ### Table of Contents
+
 * [HelloWorld: Your First Pass](#helloworld-your-first-pass)
 * Part 1: **llvm-tutor** in more detail
   * [Development Environment](#development-environment)
-  * [Building & Testing](#building--testing)
+  * [Building &amp; Testing](#building--testing)
   * [Overview of the Passes](#overview-of-the-passes)
   * [Debugging](#debugging)
 * Part 2: Passes In LLVM
@@ -44,9 +50,9 @@ are internested in similar tutorial for Clang.
   * [Optimisation Passes Inside LLVM](#optimisation-passes-inside-llvm)
 * [References](#references)
 
-
 HelloWorld: Your First Pass
 ===========================
+
 The **HelloWorld** pass from
 [HelloWorld.cpp](https://github.com/banach-space/llvm-tutor/blob/main/HelloWorld/HelloWorld.cpp)
 is a self-contained *reference example*. The corresponding
@@ -94,25 +100,31 @@ flag is used to prevent **opt** from printing the output bitcode file.
 
 Development Environment
 =======================
+
 ## Platform Support And Requirements
+
 This project has been tested on **Ubuntu 22.04** and **Mac OS X 11.7**. In
 order to build **llvm-tutor** you will need:
-  * LLVM 18
-  * C++ compiler that supports C++17
-  * CMake 3.20 or higher
+
+* LLVM 18
+* C++ compiler that supports C++17
+* CMake 3.20 or higher
 
 In order to run the passes, you will need:
-  * **clang-18** (to generate input LLVM files)
-  * [**opt**](http://llvm.org/docs/CommandGuide/opt.html) (to run the passes)
+
+* **clang-18** (to generate input LLVM files)
+* [**opt**](http://llvm.org/docs/CommandGuide/opt.html) (to run the passes)
 
 There are additional requirements for tests (these will be satisfied by
 installing LLVM 18):
-  * [**lit**](https://llvm.org/docs/CommandGuide/lit.html) (aka **llvm-lit**,
-    LLVM tool for executing the tests)
-  * [**FileCheck**](https://llvm.org/docs/CommandGuide/FileCheck.html) (LIT
-    requirement, it's used to check whether tests generate the expected output)
+
+* [**lit**](https://llvm.org/docs/CommandGuide/lit.html) (aka **llvm-lit**,
+  LLVM tool for executing the tests)
+* [**FileCheck**](https://llvm.org/docs/CommandGuide/FileCheck.html) (LIT
+  requirement, it's used to check whether tests generate the expected output)
 
 ## Installing LLVM 18 on Mac OS X
+
 On Darwin you can install LLVM 18 with [Homebrew](https://brew.sh/):
 
 ```bash
@@ -130,6 +142,7 @@ Once the installation (or upgrade) is complete, all the required header files,
 libraries and tools will be located in `/opt/homebrew/opt/llvm/`.
 
 ## Installing LLVM 18 on Ubuntu
+
 On Ubuntu Jammy Jellyfish, you can install modern LLVM from the official
 [repository](http://apt.llvm.org/):
 
@@ -139,10 +152,12 @@ sudo apt-add-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 
 sudo apt-get update
 sudo apt-get install -y llvm-18 llvm-18-dev llvm-18-tools clang-18
 ```
+
 This will install all the required header files, libraries and tools in
 `/usr/lib/llvm-18/`.
 
 ## Building LLVM 18 From Sources
+
 Building from sources can be slow and tricky to debug. It is not necessary, but
 might be your preferred way of obtaining LLVM 18. The following steps will work
 on Linux and Mac OS X:
@@ -156,12 +171,15 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=host -DLLVM_ENABLE_PROJECTS=clang <llvm-project/root/dir>/llvm/
 cmake --build .
 ```
+
 For more details read the [official
 documentation](https://llvm.org/docs/CMake.html).
 
 Building & Testing
-===================
+==================
+
 ## Building
+
 You can build **llvm-tutor** (and all the provided pass plugins) as follows:
 
 ```bash
@@ -176,6 +194,7 @@ corresponding `LLVMConfig.cmake` script that is used to set the include and
 library paths.
 
 ## Testing
+
 In order to run **llvm-tutor** tests, you need to install **llvm-lit** (aka
 **lit**). It's not bundled with LLVM 18 packages, but you can install it with
 **pip**:
@@ -184,14 +203,17 @@ In order to run **llvm-tutor** tests, you need to install **llvm-lit** (aka
 # Install lit - note that this installs lit globally
 pip install lit
 ```
+
 Running the tests is as simple as:
 
 ```bash
 $ lit <build_dir>/test
 ```
+
 Voilà! You should see all tests passing.
 
 ## LLVM Plugins as shared objects
+
 In **llvm-tutor** every LLVM pass is implemented in a separate shared object
 (you can learn more about shared objects
 [here](http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html)).
@@ -209,6 +231,7 @@ extension. When working on Mac OS, use `*.dylib` instead.
 
 Overview of The Passes
 ======================
+
 The available passes are categorised as either Analysis, Transformation or CFG.
 The difference between Analysis and Transformation passes is rather
 self-explanatory ([here](#analysis-vs-transformation-pass) is a more technical
@@ -219,20 +242,20 @@ hence a dedicated category.
 In the following table the passes are grouped thematically and ordered by the
 level of complexity.
 
-| Name      | Description     | Category |
-|-----------|-----------------|------|
-|[**HelloWorld**](#helloworld-your-first-pass) | visits all functions and prints their names | Analysis |
-|[**OpcodeCounter**](#opcodecounter) | prints a summary of LLVM IR opcodes in the input module | Analysis |
-|[**InjectFuncCall**](#injectfunccall) | instruments the input module by inserting calls to `printf` | Transformation |
-|[**StaticCallCounter**](#staticcallcounter) | counts direct function calls at compile-time (static analysis) | Analysis |
-|[**DynamicCallCounter**](#dynamiccallcounter) | counts direct function calls at run-time (dynamic analysis) | Transformation |
-|[**MBASub**](#mbasub) | obfuscate integer `sub` instructions | Transformation |
-|[**MBAAdd**](#mbaadd) | obfuscate 8-bit integer `add` instructions | Transformation |
-|[**FindFCmpEq**](#findfcmpeq) | finds floating-point equality comparisons | Analysis |
-|[**ConvertFCmpEq**](#convertfcmpeq) | converts direct floating-point equality comparisons to difference comparisons | Transformation |
-|[**RIV**](#riv) | finds reachable integer values for each basic block | Analysis |
-|[**DuplicateBB**](#duplicatebb) | duplicates basic blocks, requires **RIV** analysis results | CFG |
-|[**MergeBB**](#mergebb) | merges duplicated basic blocks | CFG |
+| Name                                             | Description                                                                   | Category       |
+| ------------------------------------------------ | ----------------------------------------------------------------------------- | -------------- |
+| [**HelloWorld**](#helloworld-your-first-pass) | visits all functions and prints their names                                   | Analysis       |
+| [**OpcodeCounter**](#opcodecounter)           | prints a summary of LLVM IR opcodes in the input module                       | Analysis       |
+| [**InjectFuncCall**](#injectfunccall)         | instruments the input module by inserting calls to `printf`                 | Transformation |
+| [**StaticCallCounter**](#staticcallcounter)   | counts direct function calls at compile-time (static analysis)                | Analysis       |
+| [**DynamicCallCounter**](#dynamiccallcounter) | counts direct function calls at run-time (dynamic analysis)                   | Transformation |
+| [**MBASub**](#mbasub)                         | obfuscate integer `sub` instructions                                        | Transformation |
+| [**MBAAdd**](#mbaadd)                         | obfuscate 8-bit integer `add` instructions                                  | Transformation |
+| [**FindFCmpEq**](#findfcmpeq)                 | finds floating-point equality comparisons                                     | Analysis       |
+| [**ConvertFCmpEq**](#convertfcmpeq)           | converts direct floating-point equality comparisons to difference comparisons | Transformation |
+| [**RIV**](#riv)                               | finds reachable integer values for each basic block                           | Analysis       |
+| [**DuplicateBB**](#duplicatebb)               | duplicates basic blocks, requires**RIV** analysis results               | CFG            |
+| [**MergeBB**](#mergebb)                       | merges duplicated basic blocks                                                | CFG            |
 
 Once you've [built](#building--testing) this project, you can experiment with
 every pass separately. All passes, except for
@@ -248,6 +271,7 @@ $LLVM_DIR/bin/clang -O1 -emit-llvm input.c -S -o out.ll
 # Binary/bit-code form
 $LLVM_DIR/bin/clang -O1 -emit-llvm input.c -c -o out.bc
 ```
+
 It doesn't matter whether you choose the binary, `*.bc` (default), or
 textual/LLVM assembly form (`.ll`, requires the `-S` flag). Obviously, the
 latter is more human-readable. Similar logic applies to **opt** - by default it
@@ -260,8 +284,7 @@ attribute](https://llvm.org/docs/LangRef.html#function-attributes) if either
 * no optimization level is specified, or
 * `-O0` is specified.
 
-If you want to compile at `-O0`, you need to specify `-O0 -Xclang
--disable-O0-optnone` or define a static
+If you want to compile at `-O0`, you need to specify `-O0 -Xclang -disable-O0-optnone` or define a static
 [isRequired](https://llvm.org/docs/WritingAnLLVMNewPMPass.html#required-passes)
 method in your pass.  Alternatively, you can specify `-O1` or higher.
 Otherwise the new pass manager will register the pass but your pass will not be
@@ -272,6 +295,7 @@ use the `*.so` extension for pass plugins. When working on Mac OS, use
 `*.dylib` instead.
 
 ## OpcodeCounter
+
 **OpcodeCounter** is an Analysis pass that prints a summary of the [LLVM IR
 opcodes](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/IR/Instruction.cpp#L397-L480)
 encountered in every function in the input module. This pass can be [run
@@ -280,6 +304,7 @@ pre-defined optimisation pipelines. However, let's use our tried and tested meth
 first.
 
 ### Run the pass
+
 We will use
 [input_for_cc.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_cc.c)
 to test **OpcodeCounter**. Since **OpcodeCounter** is an Analysis pass, we want
@@ -321,6 +346,7 @@ call                 4
 ```
 
 ### Auto-registration with optimisation pipelines
+
 You can run **OpcodeCounter** by simply specifying an optimisation level (e.g.
 `-O{1|2|3|s}`). This is achieved through auto-registration with the existing
 optimisation pass pipelines. Note that you still have to specify the plugin
@@ -336,6 +362,7 @@ on
 [line 106](https://github.com/banach-space/llvm-tutor/blob/main/lib/OpcodeCounter.cpp#L106-L110).
 
 ## InjectFuncCall
+
 This pass is a _HelloWorld_ example for _code instrumentation_. For every function
 defined in the input module, **InjectFuncCall** will add (_inject_) the following
 call to [`printf`](https://en.cppreference.com/w/cpp/io/c/fprintf):
@@ -343,11 +370,13 @@ call to [`printf`](https://en.cppreference.com/w/cpp/io/c/fprintf):
 ```C
 printf("(llvm-tutor) Hello from: %s\n(llvm-tutor)   number of arguments: %d\n", FuncName, FuncNumArgs)
 ```
+
 This call is added at the beginning of each function (i.e. before any other
 instruction). `FuncName` is the name of the function and `FuncNumArgs` is the
 number of arguments that the function takes.
 
 ### Run the pass
+
 We will use
 [input_for_hello.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_hello.c)
 to test **InjectFuncCall**:
@@ -359,6 +388,7 @@ $LLVM_DIR/bin/clang -O0 -emit-llvm -c <source_dir>/inputs/input_for_hello.c -o i
 # Run the pass through opt
 $LLVM_DIR/bin/opt -load-pass-plugin <build_dir>/lib/libInjectFuncCall.so --passes="inject-func-call" input_for_hello.bc -o instrumented.bin
 ```
+
 This generates `instrumented.bin`, which is the instrumented version of
 `input_for_hello.bc`. In order to verify that **InjectFuncCall** worked as
 expected, you can either check the output file (and verify that it contains
@@ -383,17 +413,20 @@ $LLVM_DIR/bin/lli instrumented.bin
 ```
 
 ### InjectFuncCall vs HelloWorld
+
 You might have noticed that **InjectFuncCall** is somewhat similar to
 [**HelloWorld**](#helloworld-your-first-pass). In both cases the pass visits
 all functions, prints their names and the number of arguments. The difference
 between the two passes becomes quite apparent when you compare the output
 generated for the same input file, e.g. `input_for_hello.c`. The number of
 times `Hello from` is printed is either:
+
 * once per every function call in the case of **InjectFuncCall**, or
 * once per function definition in the case of **HelloWorld**.
 
 This makes perfect sense and hints how different the two passes are. Whether to
 print `Hello from` is determined at either:
+
 * run-time for **InjectFuncCall**, or
 * compile-time for **HelloWorld**.
 
@@ -402,16 +435,19 @@ with **opt** and then execute the instrumented IR module in order to see the
 output.  For **HelloWorld** it was sufficient to run the pass with **opt**.
 
 ## StaticCallCounter
+
 The **StaticCallCounter** pass counts the number of _static_ function calls in
 the input LLVM module. _Static_ refers to the fact that these function calls
 are compile-time calls (i.e. visible during the compilation). This is in
 contrast to _dynamic_ function calls, i.e. function calls encountered at
 run-time (when the compiled module is run). The distinction becomes apparent
 when analysing functions calls within loops, e.g.:
+
 ```c
   for (i = 0; i < 10; i++)
     foo();
 ```
+
 Although at run-time `foo` will be executed 10 times, **StaticCallCounter**
 will report only 1 function call.
 
@@ -419,6 +455,7 @@ This pass will only consider direct functions calls. Functions calls via
 function pointers are not taken into account.
 
 ### Run the pass through **opt**
+
 We will use
 [input_for_cc.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_cc.c)
 to test **StaticCallCounter**:
@@ -430,6 +467,7 @@ $LLVM_DIR/bin/clang -emit-llvm -c <source_dir>/inputs/input_for_cc.c -o input_fo
 # Run the pass through opt
 $LLVM_DIR/bin/opt opt -load-pass-plugin <build_dir>/lib/libStaticCallCounter.so -passes="print<static-cc>" -disable-output input_for_cc.bc
 ```
+
 You should see the following output:
 
 ```
@@ -450,6 +488,7 @@ that corresponds to **StaticCallCounter** (by passing
 detail [here](#run-the-pass).
 
 ### Run the pass through `static`
+
 You can run **StaticCallCounter** through a standalone tool called `static`.
 `static` is an LLVM based tool implemented in
 [StaticMain.cpp](https://github.com/banach-space/llvm-tutor/blob/main/tools/StaticMain.cpp).
@@ -459,11 +498,13 @@ without the need for **opt**:
 ```bash
 <build_dir>/bin/static input_for_cc.bc
 ```
+
 It is an example of a relatively basic static analysis tool. Its implementation
 demonstrates how basic pass management in LLVM works (i.e. it handles that for
 itself instead of relying on **opt**).
 
 ## DynamicCallCounter
+
 The **DynamicCallCounter** pass counts the number of _run-time_ (i.e.
 encountered during the execution) function calls. It does so by inserting
 call-counting instructions that are executed every time a function is called.
@@ -473,6 +514,7 @@ This pass builds on top of ideas presented in
 example first.
 
 ### Run the pass
+
 We will use
 [input_for_cc.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_cc.c)
 to test **DynamicCallCounter**:
@@ -484,6 +526,7 @@ $LLVM_DIR/bin/clang -emit-llvm -c <source_dir>/inputs/input_for_cc.c -o input_fo
 # Instrument the input file
 $LLVM_DIR/bin/opt -load-pass-plugin=<build_dir>/lib/libDynamicCallCounter.so -passes="dynamic-cc" input_for_cc.bc -o instrumented_bin
 ```
+
 This generates `instrumented.bin`, which is the instrumented version of
 `input_for_cc.bc`. In order to verify that **DynamicCallCounter** worked as
 expected, you can either check the output file (and verify that it contains
@@ -493,6 +536,7 @@ new call-counting instructions) or run it:
 # Run the instrumented binary
 $LLVM_DIR/bin/lli  ./instrumented_bin
 ```
+
 You will see the following output:
 
 ```
@@ -508,6 +552,7 @@ main                 1
 ```
 
 ### DynamicCallCounter vs StaticCallCounter
+
 The number of function calls reported by **DynamicCallCounter** and
 **StaticCallCounter** are different, but both results are correct. They
 correspond to _run-time_ and _compile-time_ function calls respectively. Note
@@ -517,10 +562,11 @@ the instrumented binary_ to see the output. This is similar to what we observed
 when comparing [HelloWorld and InjectFuncCall](#injectfunccall-vs-helloworld).
 
 ## Mixed Boolean Arithmetic Transformations
+
 These passes implement [mixed
 boolean arithmetic](https://tel.archives-ouvertes.fr/tel-01623849/document)
 transformations. Similar transformation are often used in code obfuscation (you
-may also know them from [Hacker's
+may also know them from [Hacker&#39;s
 Delight](https://www.amazon.co.uk/Hackers-Delight-Henry-S-Warren/dp/0201914654))
 and are a great illustration of what and how LLVM passes can be used for.
 
@@ -529,16 +575,19 @@ Clang plugins are available in
 [**clang-tutor**](https://github.com/banach-space/clang-tutor#obfuscator).
 
 ### MBASub
+
 The **MBASub** pass implements this rather basic expression:
 
 ```
 a - b == (a + ~b) + 1
 ```
+
 Basically, it replaces all instances of integer `sub` according to the above
 formula. The corresponding LIT tests verify that both the formula  and that the
 implementation are correct.
 
 #### Run the pass
+
 We will use
 [input_for_mba_sub.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_mba_sub.c)
 to test **MBASub**:
@@ -550,17 +599,20 @@ $LLVM_DIR/bin/opt -load-pass-plugin=<build_dir>/lib/libMBASub.so -passes="mba-su
 ```
 
 ### MBAAdd
+
 The **MBAAdd** pass implements a slightly more involved formula that is only
 valid for 8 bit integers:
 
 ```
 a + b == (((a ^ b) + 2 * (a & b)) * 39 + 23) * 151 + 111
 ```
+
 Similarly to `MBASub`, it replaces all instances of integer `add` according to
 the above identity, but only for 8-bit integers. The LIT tests verify that both
 the formula and the implementation are correct.
 
 #### Run the pass
+
 We will use
 [input_for_add.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_mba.c)
 to test **MBAAdd**:
@@ -572,6 +624,7 @@ $LLVM_DIR/bin/opt -load-pass-plugin=<build_dir>/lib/libMBAAdd.so -passes="mba-ad
 ```
 
 ## RIV
+
 **RIV** is an analysis pass that for each [basic
 block](http://llvm.org/docs/ProgrammersManual.html#the-basicblock-class) BB in
 the input function computes the set reachable integer values, i.e. the integer
@@ -589,6 +642,7 @@ from LLVM, which is used to obtain the dominance tree for the basic blocks
 in the input function.
 
 ### Run the pass
+
 We will use
 [input_for_riv.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_riv.c)
 to test **RIV**:
@@ -600,6 +654,7 @@ $LLVM_DIR/bin/clang -emit-llvm -S -O1 <source_dir>/inputs/input_for_riv.c -o inp
 # Run the pass through opt
 $LLVM_DIR/bin/opt -load-pass-plugin <build_dir>/lib/libRIV.so -passes="print<riv>" -disable-output input_for_riv.ll
 ```
+
 You will see the following output:
 
 ```
@@ -649,10 +704,12 @@ that corresponds to **RIV** (by passing `-passes="print<riv>"` to **opt**). We
 discussed printing passes in more detail [here](#run-the-pass).
 
 ## DuplicateBB
+
 This pass will duplicate all basic blocks in a module, with the exception of
 basic blocks for which there are no reachable integer values (identified through
 the **RIV** pass). An example of such a basic block is the entry block in a
 function that:
+
 * takes no arguments and
 * is embedded in a module that defines no global values.
 
@@ -670,7 +727,9 @@ if (var == 0)
 else
   goto clone 2
 ```
+
 in which:
+
 * `var` is a randomly picked variable from the `RIV` set for the current basic
   block
 * `clone 1` and `clone 2` are labels for the cloned basic blocks.
@@ -693,6 +752,7 @@ LEGEND:
 [clone 1|2]    - two new basic blocks that are clones of BB (inserted by DuplicateBB)
 [tail]         - the new basic block that merges [clone 1] and [clone 2] (inserted by DuplicateBB)
 ```
+
 As depicted above, **DuplicateBB** replaces qualifying basic blocks with 4 new
 basic blocks. This is implemented through LLVM's
 [SplitBlockAndInsertIfThenElse](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/include/llvm/Transforms/Utils/BasicBlockUtils.h#L471).
@@ -700,6 +760,7 @@ basic blocks. This is implemented through LLVM's
 words, it's an elaborate wrapper for LLVM's `SplitBlockAndInsertIfThenElse`.
 
 ### Run the pass
+
 This pass depends on the **RIV** pass, which also needs be loaded in order for
 **DuplicateBB** to work. Let's use
 [input_for_duplicate_bb.c](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_duplicate_bb.c)
@@ -717,6 +778,7 @@ define i32 @foo(i32) {
   ret i32 1
 }
 ```
+
 Note that there's only one basic block (the _entry_ block) and that `foo` takes
 one argument (this means that the result from **RIV** will be a non-empty set).
 We will now apply **DuplicateBB** to `foo`:
@@ -724,6 +786,7 @@ We will now apply **DuplicateBB** to `foo`:
 ```bash
 $LLVM_DIR/bin/opt -load-pass-plugin <build_dir>/lib/libRIV.so -load-pass-plugin <build_dir>/lib/libDuplicateBB.so -passes=duplicate-bb -S input_for_duplicate_bb.ll -o duplicate.ll
 ```
+
 After the instrumentation `foo` will look like this (all metadata has been stripped):
 
 ```llvm
@@ -742,6 +805,7 @@ lt-tail-0:
   ret i32 1
 }
 ```
+
 There are four basic blocks instead of one. All new basic blocks end with a
 numeric id of the original basic block (`0` in this case). `lt-if-then-else-0`
 contains the new `if-then-else` condition. `clone-1-0` and `clone-2-0` are
@@ -749,6 +813,7 @@ clones of the original basic block in `foo`. `lt-tail-0` is the extra basic
 block that's required to merge `clone-1-0` and `clone-2-0`.
 
 ## MergeBB
+
 **MergeBB** will merge qualifying basic blocks that are identical. To some
 extent, this pass reverts the transformations introduced by **DuplicateBB**.
 This is illustrated below:
@@ -771,12 +836,14 @@ LEGEND:
 [clone]        - [clone 1] and [clone 2] after merging, this block should be very similar to [BB] (**MergeBB**)
 [label*]       - [label] after being updated by **MergeBB**
 ```
+
 Recall that **DuplicateBB** replaces all qualifying basic block with four new
 basic blocks, two of which are clones of the original block.  **MergeBB** will
 merge those two clones back together, but it will not remove the remaining two
 blocks added by **DuplicateBB** (it will update them though).
 
 ### Run the pass
+
 Let's use the following IR implementation of `foo` as input. Note that basic
 blocks 3 and 5 are identical and can safely be merged:
 
@@ -798,12 +865,15 @@ define i32 @foo(i32) {
   ret i32 %8
 }
 ```
+
 We will now apply **MergeBB** to `foo`:
 
 ```bash
 $LLVM_DIR/bin/opt -load <build_dir>/lib/libMergeBB.so -legacy-merge-bb -S foo.ll -o merge.ll
 ```
+
 After the instrumentation `foo` will look like this (all metadata has been stripped):
+
 ```llvm
 define i32 @foo(i32) {
   %2 = icmp eq i32 %0, 19
@@ -817,11 +887,12 @@ define i32 @foo(i32) {
   ret i32 %4
 }
 ```
+
 As you can see, basic blocks 3 and 5 from the input module have been merged
 into one basic block.
 
-
 ### Run MergeBB on the output from DuplicateBB
+
 It is really interesting to see the effect of **MergeBB** on the output from
 **DuplicateBB**. Let's start with the same input as we used for **DuplicateBB**:
 
@@ -837,6 +908,7 @@ to load three plugins:
 ```bash
 $LLVM_DIR/bin/opt -load-pass-plugin <build_dir>/lib/libRIV.so -load-pass-plugin <build_dir>/lib/libMergeBB.so -load-pass-plugin <build-dir>/lib/libDuplicateBB.so -passes=duplicate-bb,merge-bb -S input_for_duplicate_bb.ll -o merge_after_duplicate.ll
 ```
+
 And here's the output:
 
 ```llvm
@@ -852,6 +924,7 @@ lt-tail-0:
   ret i32 1
 }
 ```
+
 Compare this with the [output generated by **DuplicateBB**](#run-the-pass-7).
 Only one of the clones, `lt-clone-2-0`, has been  preserved, and
 `lt-if-then-else-0` has been updated accordingly. Regardless of the value of of
@@ -859,17 +932,19 @@ the `if` condition (more precisely, variable `%1`), the control flow jumps to
 `lt-clone-2-0`.
 
 ## FindFCmpEq
-The **FindFCmpEq** pass finds all floating-point comparison operations that 
+
+The **FindFCmpEq** pass finds all floating-point comparison operations that
 directly check for equality between two values. This is important because these
-sorts of comparisons can sometimes be indicators of logical issues due to 
-[rounding errors](https://en.wikipedia.org/wiki/Machine_epsilon) inherent in 
+sorts of comparisons can sometimes be indicators of logical issues due to
+[rounding errors](https://en.wikipedia.org/wiki/Machine_epsilon) inherent in
 floating-point arithmetic.
 
-**FindFCmpEq** is implemented as two passes: an analysis pass (`FindFCmpEq`) and a 
-printing pass (`FindFCmpEqPrinter`). The legacy implementation (`FindFCmpEqWrapper`) 
+**FindFCmpEq** is implemented as two passes: an analysis pass (`FindFCmpEq`) and a
+printing pass (`FindFCmpEqPrinter`). The legacy implementation (`FindFCmpEqWrapper`)
 makes use of both of these passes.
 
 ### Run the pass
+
 We will use [input_for_fcmp_eq.ll](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_fcmp_eq.c)
 to test **FindFCmpEq**:
 
@@ -893,12 +968,14 @@ Floating-point equality comparisons in "main":
 ```
 
 ## ConvertFCmpEq
+
 The **ConvertFCmpEq** pass is a transformation that uses the analysis results
 of [**FindFCmpEq**](#FindFCmpEq) to convert direct floating-point equality
 comparison instructions into logically equivalent ones that use a
 pre-calculated rounding threshold.
 
 ### Run the pass
+
 As with [**FindFCmpEq**](#FindFCmpEq), we will use
 [input_for_fcmp_eq.ll](https://github.com/banach-space/llvm-tutor/blob/main/inputs/input_for_fcmp_eq.c)
 to test **ConvertFCmpEq**:
@@ -950,7 +1027,8 @@ the machine epsilon, the original two floating-point values are considered to
 be equal.
 
 Debugging
-==========
+=========
+
 Before running a debugger, you may want to analyze the output from
 [LLVM_DEBUG](http://llvm.org/docs/ProgrammersManual.html#the-llvm-debug-macro-and-debug-option)
 and
@@ -962,6 +1040,7 @@ export LLVM_DIR=<installation/dir/of/llvm/18>
 $LLVM_DIR/bin/clang -emit-llvm -S -O1 <source_dir>/inputs/input_for_mba.c -o input_for_mba.ll
 $LLVM_DIR/bin/opt -S -load-pass-plugin <build_dir>/lib/libMBAAdd.so -passes=mba-add input_for_mba.ll -debug-only=mba-add -stats -o out.ll
 ```
+
 Note the `-debug-only=mba-add` and `-stats` flags in the command line - that's
 what enables the following output:
 
@@ -975,6 +1054,7 @@ what enables the following output:
 
 3 mba-add - The # of substituted instructions
 ```
+
 As you can see, you get a nice summary from **MBAAdd**. In many cases this will
 be sufficient to understand what might be going wrong. Note that for these
 macros to work you need a debug build of LLVM (i.e. **opt**) and **llvm-tutor**
@@ -985,6 +1065,7 @@ For tricker issues just use a debugger. Below I demonstrate how to debug
 to `MBAAdd::run`. Hopefully that will be sufficient for you to start.
 
 ## Mac OS X
+
 The default debugger on OS X is [LLDB](http://lldb.llvm.org). You will
 normally use it like this:
 
@@ -995,6 +1076,7 @@ lldb -- $LLVM_DIR/bin/opt -S -load-pass-plugin <build_dir>/lib/libMBAAdd.dylib -
 (lldb) breakpoint set --name MBAAdd::run
 (lldb) process launch
 ```
+
 or, equivalently, by using LLDBs aliases:
 
 ```bash
@@ -1004,9 +1086,11 @@ lldb -- $LLVM_DIR/bin/opt -S -load-pass-plugin <build_dir>/lib/libMBAAdd.dylib -
 (lldb) b MBAAdd::run
 (lldb) r
 ```
+
 At this point, LLDB should break at the entry to `MBAAdd::run`.
 
 ## Ubuntu
+
 On most Linux systems, [GDB](https://www.gnu.org/software/gdb/) is the most
 popular debugger. A typical session will look like this:
 
@@ -1017,10 +1101,12 @@ gdb --args $LLVM_DIR/bin/opt -S -load-pass-plugin <build_dir>/lib/libMBAAdd.so -
 (gdb) b MBAAdd.cpp:MBAAdd::run
 (gdb) r
 ```
+
 At this point, GDB should break at the entry to `MBAAdd::run`.
 
 Analysis vs Transformation Pass
 ===============================
+
 The implementation of a pass depends on whether it is an Analysis or a
 Transformation pass:
 
@@ -1053,6 +1139,7 @@ complexities. However, only in the case of
 strictness (i.e. it is neither a transformation nor analysis pass).
 
 ### Printing passes for the new pass manager
+
 A printing pass for an Analysis pass is basically a Transformation pass that:
 
 * requests the results of the analysis from the original pass, and
@@ -1063,6 +1150,7 @@ passes under the `print<analysis-pass-name>` command line option.
 
 Dynamic vs Static Plugins
 =========================
+
 By default, all examples in **llvm-tutor** are built as
 [dynamic plugins](#llvm-plugins-as-shared-objecs). However, LLVM provides
 infrastructure for both _dynamic_ and _static_ plugins
@@ -1117,7 +1205,8 @@ This will print all the changes within `llvm-project/llvm` introduced by the
 script.
 
 Optimisation Passes Inside LLVM
-=================================
+===============================
+
 Apart from writing your own transformations an analyses, you may want to
 familiarize yourself with [the passes available within
 LLVM](https://llvm.org/docs/Passes.html). It is a great resource for learning
@@ -1133,17 +1222,17 @@ annotated test cases for the corresponding pass. The goal of these tests is to
 demonstrate the functionality of the tested pass through relatively simple
 examples.
 
-| Name      | Description     | Test files in llvm-tutor |
-|-----------|-----------------|--------------------------|
-|[**dce**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/DCE.cpp) | Dead Code Elimination | [dce.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/dce.ll) |
-|[**memcpyopt**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/MemCpyOptimizer.cpp) | Optimise calls to `memcpy` (e.g. replace them with `memset`) | [memcpyopt.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/memcpyopt.ll) |
-|[**reassociate**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/Reassociate.cpp) | Reassociate (e.g. 4 + (x + 5) -> x + (4 + 5)). This enables further optimisations, e.g. LICM. | [reassociate.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/reassociate.ll) |
-|[**always-inline**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/IPO/AlwaysInliner.cpp) | Always inlines functions decorated with [`alwaysinline`](https://llvm.org/docs/LangRef.html#function-attributes) | [always-inline.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/always-inline.ll) |
-|[**loop-deletion**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/LoopDeletion.cpp) | Delete unused loops | [loop-deletion.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/loop-deletion.ll) |
-|[**licm**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/LICM.cpp) | [Loop-Invariant Code Motion](https://en.wikipedia.org/wiki/Loop-invariant_code_motion) (a.k.a. LICM) | [licm.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/licm.ll) |
-|[**slp**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp) | [Superword-level parallelism vectorisation](https://llvm.org/docs/Vectorizers.html#the-slp-vectorizer) | [slp\_x86.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/slp_x86.ll), [slp\_aarch64.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/slp_aarch64.ll)  |
+| Name                                                                                                                       | Description                                                                                                    | Test files in llvm-tutor                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [**dce**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/DCE.cpp)                    | Dead Code Elimination                                                                                          | [dce.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/dce.ll)                                                                                                         |
+| [**memcpyopt**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/MemCpyOptimizer.cpp)  | Optimise calls to `memcpy` (e.g. replace them with `memset`)                                               | [memcpyopt.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/memcpyopt.ll)                                                                                             |
+| [**reassociate**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/Reassociate.cpp)    | Reassociate (e.g. 4 + (x + 5) -> x + (4 + 5)). This enables further optimisations, e.g. LICM.                  | [reassociate.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/reassociate.ll)                                                                                         |
+| [**always-inline**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/IPO/AlwaysInliner.cpp)   | Always inlines functions decorated with[`alwaysinline`](https://llvm.org/docs/LangRef.html#function-attributes) | [always-inline.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/always-inline.ll)                                                                                     |
+| [**loop-deletion**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/LoopDeletion.cpp) | Delete unused loops                                                                                            | [loop-deletion.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/loop-deletion.ll)                                                                                     |
+| [**licm**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Scalar/LICM.cpp)                  | [Loop-Invariant Code Motion](https://en.wikipedia.org/wiki/Loop-invariant_code_motion) (a.k.a. LICM)              | [licm.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/licm.ll)                                                                                                       |
+| [**slp**](https://github.com/llvm/llvm-project/blob/release/18.x/llvm/lib/Transforms/Vectorize/SLPVectorizer.cpp)       | [Superword-level parallelism vectorisation](https://llvm.org/docs/Vectorizers.html#the-slp-vectorizer)            | [slp\_x86.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/slp_x86.ll), [slp\_aarch64.ll](https://github.com/banach-space/llvm-tutor/blob/main/test/llvm/slp_aarch64.ll) |
 
-This list focuses on [LLVM's transform
+This list focuses on [LLVM&#39;s transform
 passes](https://llvm.org/docs/Passes.html#transform-passes) that are relatively
 easy to demonstrate through small, standalone examples. You can ran an
 individual test like this:
@@ -1160,15 +1249,16 @@ $LLVM_DIR/bin/opt -inline-threshold=0 -passes=always-inline -S <source/dir/llvm/
 ```
 
 References
-===========
+==========
+
 Below is a list of LLVM resources available outside the official online
 documentation that I have found very helpful. Where possible, the items are sorted by
 date.
 
 * **LLVM IR**
-  *  _”LLVM IR Tutorial-Phis,GEPs and other things, ohmy!”_, V.Bridgers, F.
-Piovezan, EuroLLVM, ([slides](https://llvm.org/devmtg/2019-04/slides/Tutorial-Bridgers-LLVM_IR_tutorial.pdf),
-  [video](https://www.youtube.com/watch?v=m8G_S5LwlTo&feature=youtu.be))
+  * _”LLVM IR Tutorial-Phis,GEPs and other things, ohmy!”_, V.Bridgers, F.
+    Piovezan, EuroLLVM, ([slides](https://llvm.org/devmtg/2019-04/slides/Tutorial-Bridgers-LLVM_IR_tutorial.pdf),
+    [video](https://www.youtube.com/watch?v=m8G_S5LwlTo&feature=youtu.be))
   * _"Mapping High Level Constructs to LLVM IR"_, M. Rodler ([link](https://mapping-high-level-constructs-to-llvm-ir.readthedocs.io/en/latest/))
 * **Examples in LLVM**
   * Control Flow Graph simplifications:
@@ -1188,7 +1278,8 @@ Piovezan, EuroLLVM, ([slides](https://llvm.org/devmtg/2019-04/slides/Tutorial-Br
   * _"Building an LLVM-based tool. Lessons learned"_, A. Denisov, [blog](https://lowlevelbits.org/building-an-llvm-based-tool.-lessons-learned/), [video](https://www.youtube.com/watch?reload=9&v=Yvj4G9B6pcU)
 
 Credits
-========
+=======
+
 This is first and foremost a community effort. This project wouldn't be
 possible without the amazing LLVM [online
 documentation](http://llvm.org/docs/), the plethora of great comments in the
@@ -1212,7 +1303,8 @@ this project. The implementations available here reflect what **I** found most
 challenging while studying them.
 
 License
-========
+=======
+
 The MIT License (MIT)
 
 Copyright (c) 2019 Andrzej Warzyński
